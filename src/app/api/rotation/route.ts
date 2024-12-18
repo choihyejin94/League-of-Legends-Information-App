@@ -1,7 +1,7 @@
 import { getChampionRotation } from "@/utils/riotApi";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET() {
     const data = await getChampionRotation()
     return NextResponse.json(data)
 }
