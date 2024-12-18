@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { ChampionsData } from "@/types/ChampionsType";
 import fetchChampionList from "@/utils/serverApi";

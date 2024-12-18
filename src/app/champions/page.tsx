@@ -2,35 +2,32 @@
 
 import { ChampionsData } from "@/types/ChampionsType";
 import fetchChampionList from "@/utils/serverApi";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchChampion = async (): Promise<ChampionsData> => {
+  const data = await fetchChampionList();
+  return data!;
+}
 
 const ChampionsPage = () => {
-  const [champions, setChampions] = useState<ChampionsData>({});
-  const [error, setError] = useState<string | null>(null);
+  const { data, error, isLoading } = useQuery<ChampionsData>({
+    queryKey: ["champions"],
+    queryFn: fetchChampion,
+  });
 
-  useEffect(() => {
-    const fetchChampion = async () => {
-      try {
-        const data = await fetchChampionList();
-        setChampions(data!);
-      } catch (error) {
-        setError("데이터 불러오는 중 오류 발생");
-        console.error(error);
-      }
-    };
-    fetchChampion();
-  }, []);
-
+  if(isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-4xl font-extrabold text-white text-center mb-10 bg-gradient-to-r from-red-500 to-red-700 p-4 rounded-lg shadow-lg">
         챔피언 목록
       </h1>{" "}
       <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-10">
-        {Object.keys(champions).map((key) => {
-          const champion = champions[key];
+        {Object.keys(data).map((key) => {
+          const champion = data[key]
           return (
             <li
               key={key}
