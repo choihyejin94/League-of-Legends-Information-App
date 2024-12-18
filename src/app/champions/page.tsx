@@ -20,6 +20,8 @@ const ChampionsPage = () => {
   if(isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
   
+  if (!data) return <div>No champions found.</div>;
+
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-4xl font-extrabold text-white text-center mb-10 bg-gradient-to-r from-red-500 to-red-700 p-4 rounded-lg shadow-lg">
